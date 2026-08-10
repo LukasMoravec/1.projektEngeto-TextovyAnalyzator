@@ -28,6 +28,8 @@ TEXTS = [
 
 lines = "----------------------------------------"
 
+punctuations = "\\\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+
 users = {
     "bob": "123",
     "ann": "pass123",
@@ -44,10 +46,71 @@ for reg_user in users:
             print(lines)
             print(f"Welcome to the app, {login}")
             print(f"We have {len(TEXTS)} texts to be analyzed. \n{lines}")
-            selected_text = int(input(f"Enter a number btw. 1 and {len(TEXTS)} to select:")) - 1
+            sel_text = input(f"Enter a number btw. 1 and {len(TEXTS)} to select:")
             break
         else:
             print("unregistered user, terminating the program.")
             break
 else:
     print("unregistered user, terminating the program.")
+
+
+if sel_text.isdigit():
+    if (int(sel_text) - 1) >= len(TEXTS):
+        print("text doesn't exist, terminating the program.")
+    else:
+        analyzed_text = TEXTS[int(sel_text) - 1]
+else:
+    print("input is not a number, terminating the program.")
+
+bareanalyzed_text = analyzed_text
+
+for punctuation in punctuations:
+    bareanalyzed_text = (analyzed_text.replace(punctuation, ""))
+
+bareanalyzed_text = bareanalyzed_text.split()
+
+word_count = len(bareanalyzed_text)
+
+titlecase_count = 0
+for titlecases in bareanalyzed_text:
+    if titlecases.istitle():
+        titlecase_count = titlecase_count + 1
+
+uppercase_count = 0
+for uppercases in bareanalyzed_text:
+    if uppercases.isupper():
+        uppercase_count = uppercase_count + 1
+
+lowercase_count = 0
+for lowercases in bareanalyzed_text:
+    if lowercases.islower():
+        lowercase_count = lowercase_count + 1
+
+numericstrings_count = 0
+for numericstrings in bareanalyzed_text:
+    if numericstrings.isdigit():
+        numericstrings_count = numericstrings_count + 1
+
+sumof_numericstr = 0
+for sumofnumstr in bareanalyzed_text:
+    if sumofnumstr.isdigit():
+        sumof_numericstr = sumof_numericstr + int(sumofnumstr)
+
+print(lines)
+print(f"There are {word_count} words in the selected text.")
+print(f"There are {titlecase_count} titlecase words.")
+print(f"There are {uppercase_count} uppercase words.")
+print(f"There are {lowercase_count} lowercase words.")
+print(f"There are {numericstrings_count} numeric strings.")
+print(f"The sum of all the numbers {sumof_numericstr}.")
+print(lines)
+print("LEN|  OCCURRENCES  |NR.")
+
+lenghts_count = {}
+for lenght in bareanalyzed_text:
+    l = len(lenght)
+    lenghts_count[l] = lenghts_count.get(l, 0) + 1
+
+for lenght, count in sorted(lenghts_count.items()):
+    print(f"{lenght}|{"*" * count}|{count}")
