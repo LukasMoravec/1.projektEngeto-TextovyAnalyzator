@@ -28,7 +28,9 @@ TEXTS = [
 
 lines = "----------------------------------------"
 
-punctuations = "\\\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+import sys
+
+from string import punctuation as punc
 
 users = {
     "bob": "123",
@@ -46,27 +48,25 @@ for reg_user in users:
             print(lines)
             print(f"Welcome to the app, {login}")
             print(f"We have {len(TEXTS)} texts to be analyzed. \n{lines}")
-            sel_text = input(f"Enter a number btw. 1 and {len(TEXTS)} to select:")
+            sel_text = input(f"Enter a number btw. 1 and {len(TEXTS)} to select: ")
             break
         else:
-            print("unregistered user, terminating the program.")
-            break
+            sys.exit("unregistered user, terminating the program.")
 else:
-    print("unregistered user, terminating the program.")
-
+    sys.exit("unregistered user, terminating the program.")
 
 if sel_text.isdigit():
-    if (int(sel_text) - 1) >= len(TEXTS):
-        print("text doesn't exist, terminating the program.")
+    if 0 == int(sel_text) or int(sel_text) > len(TEXTS):
+        sys.exit("text doesn't exist, terminating the program.")
     else:
         analyzed_text = TEXTS[int(sel_text) - 1]
 else:
-    print("input is not a number, terminating the program.")
+    sys.exit("input is not a number, terminating the program.")
 
 bareanalyzed_text = analyzed_text
 
-for punctuation in punctuations:
-    bareanalyzed_text = (analyzed_text.replace(punctuation, ""))
+for p in punc:
+    bareanalyzed_text = (analyzed_text.replace(p, ""))
 
 bareanalyzed_text = bareanalyzed_text.split()
 
